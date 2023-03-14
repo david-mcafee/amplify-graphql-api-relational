@@ -6,20 +6,20 @@ import { API } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 import { GraphQLQuery } from "@aws-amplify/api";
 import {
-  CreateBlogInput,
-  CreateBlogMutation,
+  // CreateBlogInput,
+  // CreateBlogMutation,
   CreatePostInput,
-  CreatePostMutation,
-  CreateCommentInput,
-  CreateCommentMutation,
-  CreateTagInput,
-  CreateTagMutation,
+  // CreatePostMutation,
+  // CreateCommentInput,
+  // CreateCommentMutation,
+  // CreateTagInput,
+  // CreateTagMutation,
   CreatePostTagsInput,
   CreatePostTagsMutation,
   GetBlogQuery,
   GetPostQuery,
   GetTagQuery,
-  ListBlogsQuery,
+  // ListBlogsQuery,
   ListPostsQuery,
   ListCommentsQuery,
   ListTagsQuery,
@@ -36,18 +36,30 @@ import {
   DeletePostTagsMutation,
 } from "./API";
 import * as queries from "./graphql/queries";
+// @ts-ignore
+import { GeneratedQuery } from "@aws-amplify/api";
+import * as APITypes from "./API";
+type GeneratedQueryType<INPUT, OUTPUT> = undefined extends GeneratedQuery<
+  any,
+  any
+>
+  ? string
+  : GeneratedQuery<INPUT, OUTPUT>;
 
 function App() {
   //region Create
   const createBlog = async () => {
-    const blogDetails: CreateBlogInput = {
+    const blogDetails = {
       name: `Blog ${Date.now()}`,
     };
 
-    const newBlog = await API.graphql<GraphQLQuery<CreateBlogMutation>>({
+    const newBlog = (await API.graphql({
       query: mutations.createBlog,
       variables: { input: blogDetails },
-    });
+    })) as GeneratedQueryType<
+      APITypes.CreateBlogMutationVariables,
+      APITypes.CreateBlogMutation
+    >;
 
     console.log("newBlog", newBlog);
 
@@ -60,10 +72,13 @@ function App() {
       blogPostsId: currentBlogId,
     };
 
-    const newPost = await API.graphql<GraphQLQuery<CreatePostMutation>>({
+    const newPost = (await API.graphql({
       query: mutations.createPost,
       variables: { input: postDetails },
-    });
+    })) as GeneratedQueryType<
+      APITypes.CreatePostMutationVariables,
+      APITypes.CreatePostMutation
+    >;
 
     console.log("newPost", newPost);
 
@@ -71,15 +86,18 @@ function App() {
   };
 
   const createComment = async (currentPostId: string) => {
-    const commentDetails: CreateCommentInput = {
+    const commentDetails = {
       content: `Comment ${Date.now()}`,
       postCommentsId: currentPostId,
     };
 
-    const newComment = await API.graphql<GraphQLQuery<CreateCommentMutation>>({
+    const newComment = (await API.graphql({
       query: mutations.createComment,
       variables: { input: commentDetails },
-    });
+    })) as GeneratedQueryType<
+      APITypes.CreateCommentMutationVariables,
+      APITypes.CreateCommentMutation
+    >;
 
     console.log("newComment", newComment);
 
@@ -87,14 +105,17 @@ function App() {
   };
 
   const createTag = async () => {
-    const tagDetails: CreateTagInput = {
+    const tagDetails = {
       label: `Tag ${Date.now()}`,
     };
 
-    const newTag = await API.graphql<GraphQLQuery<CreateTagMutation>>({
+    const newTag = (await API.graphql({
       query: mutations.createTag,
       variables: { input: tagDetails },
-    });
+    })) as GeneratedQueryType<
+      APITypes.CreateTagMutationVariables,
+      APITypes.CreateTagMutation
+    >;
 
     console.log("newTag", newTag);
 
@@ -121,9 +142,12 @@ function App() {
 
   //region list Queries (without nested relations)
   const getBlogs = async () => {
-    const allBlogs = await API.graphql<GraphQLQuery<ListBlogsQuery>>({
+    const allBlogs = (await API.graphql({
       query: queries.listBlogs,
-    });
+    })) as GeneratedQueryType<
+      APITypes.ListBlogsQueryVariables,
+      APITypes.ListBlogsQuery
+    >;
     console.log("Query Blogs: ", allBlogs);
     return allBlogs;
   };
