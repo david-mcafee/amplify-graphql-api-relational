@@ -14,6 +14,12 @@
     "categories": {
       "api": {
         "amplifygraphqlapirel": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "dokjly6mjr517",
+          "type": "manual"
+        }
       }
     }
   }

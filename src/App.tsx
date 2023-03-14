@@ -1,3 +1,5 @@
+// Hosted example: https://dev.dokjly6mjr517.amplifyapp.com
+
 import React from "react";
 import "./App.css";
 import { API } from "aws-amplify";
